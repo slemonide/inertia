@@ -4,7 +4,7 @@ local Client = Class{
         self.connected = false
         self.id = tostring(math.random(99999))
         self.socket = require "socket"
-        self:connect("localhost")
+        self:connect("108.63.252.129")
     end
 }
 
