@@ -18,6 +18,7 @@ while (true) do
                 port = port
             }
             udp:sendto("connected", ip, port)
+            print(#clients)
         elseif (cmd == "update") then
             for otherId, client in pairs(clients) do
                 if otherId ~= id then

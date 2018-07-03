@@ -20,11 +20,22 @@ local Player = Class{
         self.topLeftThrust = false
         self.topRightThrust = false
 
+        self.changed = true
     end
 }
 
 function Player:setName(name)
     self.name = name
+end
+
+-- Produce true if player needs to be synchronized with the server
+function Player:isOld()
+    if self.changed then
+        self.changed = false
+        return true
+    else
+        return false
+    end
 end
 
 -- Serialize player state for transfer over network
@@ -70,6 +81,7 @@ function Player:update(dt)
         if love.keyboard.isDown("w") then
             self.mainEngine = true
             self.body:applyForce(force * math.sin(angle), - force * math.cos(angle))
+            self.changed = true
         else
             self.mainEngine = false
         end
@@ -78,6 +90,7 @@ function Player:update(dt)
             self.body:applyTorque(torque)
             local angle = angle + math.pi * 3/4
             self.body:applyForce(force_s * math.sin(angle), - force_s * math.cos(angle))
+            self.changed = true
         else
             self.topLeftThrust = false
         end
@@ -86,6 +99,7 @@ function Player:update(dt)
             self.body:applyTorque(-torque)
             local angle = angle - math.pi * 3/4
             self.body:applyForce(force_s * math.sin(angle), - force_s * math.cos(angle))
+            self.changed = true
         else
             self.topRightThrust = false
         end
@@ -94,6 +108,7 @@ function Player:update(dt)
             self.body:applyTorque(-torque)
             local angle = angle + math.pi * 1/4
             self.body:applyForce(force_s * math.sin(angle), - force_s * math.cos(angle))
+            self.changed = true
         else
             self.bottomLeftThrust = false
         end
@@ -102,6 +117,7 @@ function Player:update(dt)
             self.body:applyTorque(torque)
             local angle = angle - math.pi * 1/4
             self.body:applyForce(force_s * math.sin(angle), - force_s * math.cos(angle))
+            self.changed = true
         else
             self.bottomRightThrust = false
         end

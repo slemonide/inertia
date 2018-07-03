@@ -30,24 +30,19 @@ function Client:update(dt)
                     local id, cmd, parms = data:match("^(%S*) (%S*) (.*)")
 
                     if (cmd == "update") then
---                        local x, y, a = parms:match("^(%-?[%d.e]*) (%-?[%d.e]*) (%-?[%d.e]*)$")
---                        assert(x and y and a)
---                        x, y = tonumber(x), tonumber(y)
-
                         if not PlayerManager.players[id] then
                             PlayerManager.players[id] = PlayerSpawner()
                         end
 
                         PlayerManager.players[id]:deserialize(parms)
---                        PlayerManager.players[id].body:setX(x)
---                        PlayerManager.players[id].body:setY(y)
---                        PlayerManager.players[id].body:setAngle(a)
                     end
                 end
             end
         until not data
     end
-    self.udp:send(string.format("%s %s %s", self.id, 'update', Player:serialize()))
+    if Player:isOld() then
+        self.udp:send(string.format("%s %s %s", self.id, 'update', Player:serialize()))
+    end
 end
 
 return Client()
