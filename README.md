@@ -18,6 +18,7 @@ place to message me if the server is down.
 To use console, type `esc` button and then `/help` (depricated)
 
 # Program Structure
+```
 .
 ├── client
 │   ├── assets/ (sounds, graphics, fonts, etc.)
@@ -41,4 +42,4 @@ To use console, type `esc` button and then `/help` (depricated)
 │   └── world.lua (world state)
 │
 └── server.lua (server-side code)
-
+```
