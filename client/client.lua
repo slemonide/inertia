@@ -1,10 +1,10 @@
 local Client = Class{
     init = function(self)
-        math.randomseed(os.time())
         self.connected = false
-        self.id = tostring(math.random(99999))
+        self.id = -1
         self.socket = require "socket"
         self:connect("108.63.252.129")
+        self.timer = self.socket.gettime()
     end
 }
 
@@ -14,8 +14,8 @@ function Client:connect(server_name)
     if server_name == "localhost" then
         server_name = "0.0.0.0"
     end
-    self.udp:setpeername(server_name, 12345)
-    self.udp:send(string.format("%s %s $", self.id, 'connect'))
+    self.udp:setpeername(server_name, 65444)
+    self.udp:send(string.format("%f %s %s $", self.socket.gettime(), self.id, 'connect'))
     self.connected = true
 end
 
@@ -24,24 +24,25 @@ function Client:update(dt)
         repeat
             local data = self.udp:receive()
             if data then
-                if (data == "connected") then
-                    print("Connected!")
-                else
-                    local id, cmd, parms = data:match("^(%S*) (%S*) (.*)")
+                local ts, id, cmd, parms = data:match("^(%-?[%d.e]*) (%S*) (%S*) (.*)")
 
-                    if (cmd == "update") then
-                        if not PlayerManager.players[id] then
-                            PlayerManager.players[id] = PlayerSpawner()
-                        end
-
-                        PlayerManager.players[id]:deserialize(parms)
+                local lag = self.socket.gettime() - ts
+--                print("Lag: " .. tostring(lag))
+                if (cmd == "id") then
+                    self.id = tonumber(parms)
+                elseif (cmd == "update") then
+                    if not PlayerManager.players[id] then
+                        PlayerManager.players[id] = PlayerSpawner()
                     end
+
+                    PlayerManager.players[id]:deserialize(lag, parms)
                 end
             end
         until not data
     end
-    if Player:isOld() then
-        self.udp:send(string.format("%s %s %s", self.id, 'update', Player:serialize()))
+    if ((self.socket.gettime() - self.timer) > CONFIG.MIN_UPDATE_DELAY) then
+        self.udp:send(string.format("%f %d %s %s", self.socket.gettime(), self.id, 'update', Player:serialize()))
+        self.timer = self.socket.gettime()
     end
 end
 
