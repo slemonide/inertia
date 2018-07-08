@@ -2,7 +2,6 @@ local game = {}
 
 -- Called each time new game is started
 function game:init()
-    Client:connect(server_address)
 end
 
 -- Called each time new player is joined

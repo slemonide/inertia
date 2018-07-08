@@ -16,13 +16,14 @@ function menu:keypressed(key)
     suit.keypressed(key)
     love.audio.play(states.menu.snd)
     if key == "return" then
-        menu:sumo()
+        menu:connect()
     elseif key == "escape" then
         menu:back()
     end
 end
 
-function menu:sumo()
+function menu:connect()
+    Client:connect(server_address)
     current_game = games.sumo
     Gamestate.switch(states.game)
 end

@@ -10,7 +10,6 @@ end
 function game:reset()
     game.start_time = Client.socket.gettime()
     Player:reset()
-    love.audio.stop()
   
     if current_game.init then
         current_game:init()

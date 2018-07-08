@@ -24,7 +24,6 @@ end
 
 function menu:enter()
     states.game:reset()
-    love.audio.stop()
 end
 
 function menu:playAgain()
@@ -36,6 +35,7 @@ function menu:back()
 end
 
 function menu:update(dt)
+    love.audio.stop()
 
     suit.Label("Game Over!", {align="center"}, 100,100,200,30)
     suit.Label("Score: " .. menu.score, {align="center"}, 100,150,200,30)

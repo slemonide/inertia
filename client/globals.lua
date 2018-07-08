@@ -34,7 +34,7 @@ games = {
     sumo        = require "games.sumo"
 }
 current_game = nil
-server_address = ""
+server_address = "0.0.0.0"
 
 CONFIG = {
     STARS_MAX = 1000,
