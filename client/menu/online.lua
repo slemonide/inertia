@@ -1,6 +1,7 @@
 local menu = {}
 
 function menu:init()
+    menu.input = {text = server_address}
 end
 
 function menu:draw()
@@ -14,9 +15,9 @@ end
 function menu:keypressed(key)
     suit.keypressed(key)
     love.audio.play(states.menu.snd)
-    if key == "1" then
+    if key == "return" then
         menu:sumo()
-    elseif key == "escape" or key == "q" or key == "1" then
+    elseif key == "escape" then
         menu:back()
     end
 end
@@ -31,13 +32,17 @@ function menu:back()
 end
 
 function menu:update(dt)
-    suit.layout:reset(100,100, 20,20)
 
-    state = suit.Button("Sumo (1)", suit.layout:row(200,30))
+    suit.Input(menu.input, 100,100,200,30)
+    server_address = menu.input.text
+    
+    suit.layout:reset(100,200, 20,20)
+
+    state = suit.Button("Connect (enter)", suit.layout:row(200,30))
     if state.entered then love.audio.play(states.menu.snd) end
     if state.hit then menu:sumo() end
     
-    state = suit.Button("Back (2)", suit.layout:row(200,30))
+    state = suit.Button("Back (esc)", suit.layout:row(200,30))
     if state.entered then love.audio.play(states.menu.snd) end
     if state.hit then menu:back() end
 end

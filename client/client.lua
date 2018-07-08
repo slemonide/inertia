@@ -14,9 +14,10 @@ function Client:connect(server_name)
     if server_name == "localhost" then
         server_name = "0.0.0.0"
     end
-    self.udp:setpeername(server_name, 65444)
-    self.udp:send(string.format("%f %s %s $", self.socket.gettime(), self.id, 'connect'))
-    self.connected = true
+    if self.udp:setpeername(server_name, 65444) then
+        self.udp:send(string.format("%f %s %s $", self.socket.gettime(), self.id, 'connect'))
+        self.connected = true
+    end
 end
 
 function Client:update(dt)
@@ -38,10 +39,10 @@ function Client:update(dt)
                 end
             end
         until not data
-    end
-    if ((self.socket.gettime() - self.timer) > CONFIG.MIN_UPDATE_DELAY) then
-        self.udp:send(string.format("%f %d %s %s", self.socket.gettime(), self.id, 'update', Player:serialize()))
-        self.timer = self.socket.gettime()
+        if ((self.socket.gettime() - self.timer) > CONFIG.MIN_UPDATE_DELAY) then
+            self.udp:send(string.format("%f %d %s %s", self.socket.gettime(), self.id, 'update', Player:serialize()))
+            self.timer = self.socket.gettime()
+        end
     end
 end
 

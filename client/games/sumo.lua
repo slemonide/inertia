@@ -2,7 +2,7 @@ local game = {}
 
 -- Called each time new game is started
 function game:init()
-    Client:connect("0.0.0.0")
+    Client:connect(server_address)
 end
 
 -- Called each time new player is joined
@@ -16,7 +16,6 @@ function game:update(dt)
 
     if (math.sqrt(x * x + y * y) > CONFIG.STAY_CIRCLE_RADIUS) then
         states.game_over.score = Client.socket.gettime() - states.game.start_time
-        states.game_over.game = game
         Gamestate.switch(states.game_over)
     end
 end
