@@ -19,18 +19,19 @@ Player = PlayerSpawner()
 Console = require "console"
 Client = require "client"
 Stars = require "stars"
-states = {
-    menu = require "menu",
-    local_menu = require "local_menu",
-    online_menu = require "online_menu",
-    settings_menu = require "settings_menu",
-    game_over = require "game_over",
-    game = require "game"
-}
+states = {}
+states.menu = {}
+states.menu.main =     require "menu.main"
+states.menu.single =   require "menu.single"
+states.menu.online =   require "menu.online"
+states.menu.settings = require "menu.settings"
+
+states.game_over = require "game_over"
+states.game =      require "game"
 games = {
 --    infection   = require "games.infection",
     stay_circle = require "games.stay_circle",
---    sumo        = require "games.sumo"
+    sumo        = require "games.sumo"
 }
 current_game = nil
 

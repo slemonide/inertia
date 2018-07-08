@@ -20,7 +20,7 @@ function menu:keypressed(key)
 end
 
 function menu:back()
-    Gamestate.switch(states.menu)
+    Gamestate.switch(states.menu.main)
 end
 
 function menu:update(dt)

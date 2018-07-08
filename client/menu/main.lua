@@ -2,7 +2,7 @@ local menu = {}
 
 -- generate some assets (below)
 function menu:init()
-    menu.snd = menu:generateClickySound()
+    states.menu.snd = menu:generateClickySound()
 end
 
 function menu:draw()
@@ -15,7 +15,7 @@ end
 
 function menu:keypressed(key)
     suit.keypressed(key)
-    love.audio.play(menu.snd)
+    love.audio.play(states.menu.snd)
   	if key == "1" then
         menu:playlocally()
     elseif key == "2" then
@@ -28,16 +28,15 @@ function menu:keypressed(key)
 end
 
 function menu:playlocally()
-    Gamestate.switch(states.local_menu)
+    Gamestate.switch(states.menu.single)
 end
 
 function menu:playonline()
-    --Gamestate.switch(states.online_menu)
-    Gamestate.switch(states.game)
+    Gamestate.switch(states.menu.online)
 end
 
 function menu:settings()
-    Gamestate.switch(states.settings_menu)
+    Gamestate.switch(states.menu.settings)
 end
 
 function menu:quit()
@@ -48,19 +47,19 @@ function menu:update(dt)
     suit.layout:reset(100,100, 20,20)
 
     state = suit.Button("Play Locally (1)", suit.layout:row(200,30))
-    if state.entered then love.audio.play(menu.snd) end
+    if state.entered then love.audio.play(states.menu.snd) end
     if state.hit then menu:playlocally() end
 
     state = suit.Button("Play Online (2)", suit.layout:row(200,30))
-    if state.entered then love.audio.play(menu.snd) end
+    if state.entered then love.audio.play(states.menu.snd) end
     if state.hit then menu:playonline() end
     
     state = suit.Button("Settings (3)", suit.layout:row(200,30))
-    if state.entered then love.audio.play(menu.snd) end
+    if state.entered then love.audio.play(states.menu.snd) end
     if state.hit then menu:settings() end
     
     state = suit.Button("Quit (4)", suit.layout:row(200,30))
-    if state.entered then love.audio.play(menu.snd) end
+    if state.entered then love.audio.play(states.menu.snd) end
     if state.hit then menu:quit() end
 end
 

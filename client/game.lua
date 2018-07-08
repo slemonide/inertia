@@ -9,15 +9,18 @@ end
 function game:reset()
     game.start_time = Client.socket.gettime()
     Player:reset()
-
     love.audio.stop()
+  
+    if current_game.init then
+        current_game:init()
+    end
 end
 
 function game:update(dt)
     camera:update(dt)
     camera:follow(Player.body:getX(), Player.body:getY())
 
-    if current_game then
+    if current_game.update then
         current_game:update()
     end
 
@@ -43,7 +46,7 @@ function game:draw()
     World:render()
     PlayerManager:render()
     
-    if current_game then
+    if current_game.draw then
         current_game:draw()
     end
 

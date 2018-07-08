@@ -3,7 +3,6 @@ local Client = Class{
         self.connected = false
         self.id = -1
         self.socket = require "socket"
-        self:connect("108.63.252.129")
         self.timer = self.socket.gettime()
     end
 }
