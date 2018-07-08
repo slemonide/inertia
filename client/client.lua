@@ -2,6 +2,7 @@ local Client = Class{
     init = function(self)
         self.connected = false
         self.id = -1
+        self.lag = 0
         self.socket = require "socket"
         self.timer = self.socket.gettime()
     end
@@ -25,8 +26,7 @@ function Client:update(dt)
             if data then
                 local ts, id, cmd, parms = data:match("^(%-?[%d.e]*) (%S*) (%S*) (.*)")
 
-                local lag = self.socket.gettime() - ts
---                print("Lag: " .. tostring(lag))
+                self.lag = self.socket.gettime() - ts
                 if (cmd == "id") then
                     self.id = tonumber(parms)
                 elseif (cmd == "update") then
@@ -34,7 +34,7 @@ function Client:update(dt)
                         PlayerManager.players[id] = PlayerSpawner()
                     end
 
-                    PlayerManager.players[id]:deserialize(lag, parms)
+                    PlayerManager.players[id]:deserialize(self.lag, parms)
                 end
             end
         until not data

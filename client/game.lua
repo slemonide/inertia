@@ -4,6 +4,7 @@ function game:init()
     Stars:generate()
     game:reset()
     camera:setFollowStyle('TOPDOWN')
+    debug_screen = false
 end
 
 function game:reset()
@@ -54,6 +55,19 @@ function game:draw()
 
     camera:detach()
     camera:draw()
+
+    if debug_screen then
+        local vx, vy = Player.body:getLinearVelocity()
+
+        love.graphics.printf(string.format(
+        "x: %.3f y: %.3f\nvx: %.3f vy: %.3f\nAngle: %.3f\nAngular Velocity: %.3f\nlag: %.3f",
+            Player.body:getX(), Player.body:getY(),
+            vx, vy,
+            (Player.body:getAngle() % (2*math.pi)) * 180 / math.pi,
+            Player.body:getAngularVelocity() * 180 / math.pi,
+            Client.lag),
+        5, 5, love.graphics.getWidth() - 10)
+    end
 end
 
 function game:keypressed(key)
@@ -63,6 +77,8 @@ function game:keypressed(key)
         camera.scale = camera.scale * 2
     elseif key == "-" then
         camera.scale = camera.scale / 2
+    elseif key == "f1" then
+        debug_screen = not debug_screen
     end
 end
 

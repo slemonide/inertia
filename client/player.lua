@@ -96,6 +96,7 @@ end
 function Player:deserialize(lag, data)
     local x, y, vx, vy, a, av, mE, bLT, bRT, tLT, tRT = data:match("^(%-?[%d.e]*) (%-?[%d.e]*) (%-?[%d.e]*) (%-?[%d.e]*) (%-?[%d.e]*) (%-?[%d.e]*) (%S*) (%S*) (%S*) (%S*) (%S*)$")
 
+    lag = 0
     self.body:setX(x + vx * lag)
     self.body:setY(y + vy * lag)
     self.body:setLinearVelocity(vx,vy)
